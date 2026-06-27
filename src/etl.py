@@ -1,17 +1,16 @@
 import pandas as pd
 import pyodbc
 
-print("Starting ETL with SQL")
+print("Starting ETL")
 
-# Read CSV
+# 1. Extract
 df = pd.read_csv("data/employees.csv")
 
-# Clean data
+# 2. Transform
 df = df.drop_duplicates()
-df = df.dropna()
 df["Name"] = df["Name"].str.upper()
 
-# Connect to SQL Server
+# 3. Connect to SQL Server (THIS is the missing link)
 conn = pyodbc.connect(
     "DRIVER={SQL Server};"
     "SERVER=localhost;"
@@ -21,7 +20,7 @@ conn = pyodbc.connect(
 
 cursor = conn.cursor()
 
-# Load into SQL (Employee_Stage)
+# 4. Load into SQL (THIS is the real connection)
 for _, row in df.iterrows():
     cursor.execute("""
         INSERT INTO Employee_Stage (EmployeeID, Name, Department, Salary)
@@ -30,4 +29,4 @@ for _, row in df.iterrows():
 
 conn.commit()
 
-print("Data loaded into SQL successfully")
+print("Data successfully loaded into SQL Server")
