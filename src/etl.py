@@ -46,4 +46,4 @@ for row in rows:
 
 conn.commit()
 
-print("Stage → Final load completed successfully")
+print("Stage → Final load completed successfully") 
